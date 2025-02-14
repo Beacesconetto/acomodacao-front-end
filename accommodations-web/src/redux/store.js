@@ -1,7 +1,14 @@
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './reducers';
-import thunk from 'redux-thunk';
+import { configureStore } from "@reduxjs/toolkit";
+import accommodationReducer from "./reducers/accommodationSlice";
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = configureStore({
+  reducer: {
+    accommodations: accommodationReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+});
 
 export default store;

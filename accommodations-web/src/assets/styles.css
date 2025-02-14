@@ -1,0 +1,20 @@
+/* src/assets/styles.css */
+.accommodation-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .accommodation-card {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  @media (max-width: 768px) {
+    .accommodation-card {
+      width: 100%;
+    }
+  }
+  

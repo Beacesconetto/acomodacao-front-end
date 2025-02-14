@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import accommodationReducer from './accommodationReducer';
+import accommodationReducer from './accommodationSlice';
 
 const rootReducer = combineReducers({
   accommodations: accommodationReducer,
