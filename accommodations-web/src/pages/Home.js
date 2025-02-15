@@ -8,6 +8,10 @@ const Home = () => {
   const accommodations = useSelector((state) => state.accommodations.accommodations);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [url, setUrl] = useState('');
+  const [location, setLocation] = useState('');
+  const [price, setPrice] = useState('');
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -18,23 +22,31 @@ const Home = () => {
     acc.location.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleAddAccommodation = async (values) => {
-    const response = await fetch("http://localhost:8000/acomodacoes", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
+  const handleCreateAccommodation  = async () => {
+    const body = JSON.stringify({
+        name,
+        image: url,
+        location,
+        price
     });
-  
-    if (response.ok) {
-      dispatch(addAccommodation(values));
-      setIsModalOpen(false);
-      form.resetFields();
-    } else {
-      console.error("Erro ao adicionar acomodação");
-    }
-  };
+
+    const response = await fetch("http://localhost:8000/acomodacoes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
+      });
+
+      if (response.ok) {
+        dispatch(fetchAccommodations());
+        setIsModalOpen(false);
+        form.resetFields();
+      } else {
+        console.error("Erro ao adicionar acomodação");
+      }
+  }
+
   const columns = [
     { title: "Nome", dataIndex: "name", key: "name" },
     { 
@@ -71,12 +83,12 @@ const Home = () => {
       <Table columns={columns} dataSource={filteredAccommodations} rowKey="id" />
 
       <Modal title="Cadastrar Acomodação" open={isModalOpen} onCancel={() => setIsModalOpen(false)} footer={null}>
-        <Form form={form} onFinish={handleAddAccommodation} layout="vertical">
-          <Form.Item name="name" label="Nome" rules={[{ required: true }]}> <Input /> </Form.Item>
-          <Form.Item name="image" label="URL da Imagem" rules={[{ required: true }]}> <Input /> </Form.Item>
-          <Form.Item name="location" label="Localização" rules={[{ required: true }]}> <Input /> </Form.Item>
-          <Form.Item name="price" label="Preço" rules={[{ required: true }]}> <Input type="number" /> </Form.Item>
-          <Button type="primary" htmlType="submit">Cadastrar</Button>
+        <Form form={form} layout="vertical">
+          <Form.Item name="name" label="Nome"> <Input onChange={(e) =>setName(e?.target?.value)} /> </Form.Item>
+          <Form.Item name="image" label="URL da Imagem"> <Input onChange={(e) =>setUrl(e?.target?.value)} /> </Form.Item>
+          <Form.Item name="location" label="Localização"> <Input onChange={(e) =>setLocation(e?.target?.value)} /> </Form.Item>
+          <Form.Item name="price" label="Preço"> <Input onChange={(e) =>setPrice(e?.target?.value)} type="number" /> </Form.Item>
+          <Button type="primary" onClick={handleCreateAccommodation} htmlType="submit">Cadastrar</Button>
         </Form>
       </Modal>
     </div>
