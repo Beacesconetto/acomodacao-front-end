@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAccommodations } from "../redux/reducers/accommodationSlice";
 import { Table, Input, Button, Modal, Form } from "antd";
 import { StarOutlined, StarFilled } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { RightCircleOutlined } from "@ant-design/icons";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -70,7 +72,16 @@ const Home = () => {
   };
 
   const columns = [
-    { title: "Nome", dataIndex: "name", key: "name" },
+    { 
+      title: "Nome", 
+      dataIndex: "name", 
+      key: "name",
+      render: (text, record) => (
+        <Link to={`/accommodation/${record.id}`} style={{ color: "#1890ff", textDecoration: "none", display: "flex", alignItems: "center", gap: "8px" }}>
+          {text} <RightCircleOutlined style={{ color: "#1890ff" }} />
+        </Link>
+      )
+    },
     { 
       title: "Imagem", 
       dataIndex: "image", 
