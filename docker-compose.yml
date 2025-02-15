@@ -1,6 +1,6 @@
 version: '3'
 services:
   frontend:
-    build: ./frontend
+    build: ./accommodations-web
     ports:
       - "80:80"
